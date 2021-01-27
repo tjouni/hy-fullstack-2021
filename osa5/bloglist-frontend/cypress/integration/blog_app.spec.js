@@ -105,7 +105,7 @@ describe("Blog app", function () {
             .contains(`likes ${j}`);
         }
       }
-      const regex = /(likes )(\d)/;
+      const regex = /(likes )(\d+)/;
       cy.get("[data-testid=blog]")
         .then((result) => _.map(result, "textContent"))
         .then((textContents) =>
