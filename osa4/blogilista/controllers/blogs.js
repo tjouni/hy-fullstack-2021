@@ -11,6 +11,15 @@ blogsRouter.get("/", async (request, response) => {
   return response.json(blogs);
 });
 
+blogsRouter.get("/:id", async (request, response) => {
+  const blog = await Blog.findById(request.params.id).populate("user", {
+    name: 1,
+    username: 1,
+    id: 1,
+  });
+  return response.json(blog);
+});
+
 blogsRouter.post("/", async (request, response) => {
   const token = request.token;
   if (!token) {
@@ -23,9 +32,14 @@ blogsRouter.post("/", async (request, response) => {
   request.body.user = user._id;
   request.body.likes = request.body.likes || 0;
   const blog = new Blog(request.body);
-  const result = await blog.save();
-  user.blogs = user.blogs.concat(result._id);
+  const savedBlog = await blog.save();
+  user.blogs = user.blogs.concat(savedBlog._id);
   await user.save();
+  const result = await Blog.findById(savedBlog._id).populate("user", {
+    name: 1,
+    username: 1,
+    id: 1,
+  });
   return response.status(201).json(result);
 });
 
