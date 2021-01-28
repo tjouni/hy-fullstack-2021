@@ -29,6 +29,6 @@ const AnecdoteForm = ({ setNotification, addAnecdote }) => {
   );
 };
 
-export default connect(() => {}, { setNotification, addAnecdote })(
+export default connect(() => ({}), { setNotification, addAnecdote })(
   AnecdoteForm
 );
